@@ -78,12 +78,9 @@ class Node:
     def expand(self):
         "Return a list of nodes reachable from this node. [Fig. 3.8]"
 
-        for act in aplicable_actions(self.env.action_space):
-            n = Node(copy.deepcopy(self.env), None, self, 2)
-
-            n.env._monitor_id = None
-            print n.action
-            n.state, n.reward, terminal, info = n.env.step(2)
+        for act in range(0,9):
+            n = Node(copy.deepcopy(self.env), None, self, act)
+            n.state, n.reward, terminal, info = n.env.step(act)
             if type(n.reward) is list:
                 n.reward = max(n.reward)
             n.best_reward_below = n.reward
