@@ -95,7 +95,7 @@ class Node:
             print "hijo:"
             print self.reward
 
-        for act in range(0,8):
+        for act in range(0,constants.NUMBER_OF_ACTIONS):
             n = Node(copy.deepcopy(self.env), None, self, act)
             #n = Node(self.env, None, self, act)
             n.env.frameskip = constants.FRAMESKIP
