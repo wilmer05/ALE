@@ -81,7 +81,7 @@ class Node:
     def expand(self):
         "Return a list of nodes reachable from this node. [Fig. 3.8]"
         best_child = None
-        if self.parent:
+        if False and self.parent:
             #print "De:"
             self.parent.env.render()
             time.sleep(2)

@@ -13,7 +13,7 @@ cnt = 0
 actions = []
 env.frameskip = constants.FRAMESKIP
 for i in range(constants.CYCLES):
-    acts = graphSearch(env, util.Stack())
+    acts = graphSearch(env, util.Queue())
     actions += acts
     done = False
     for act in acts:
@@ -22,6 +22,9 @@ for i in range(constants.CYCLES):
         if done:
             break
     print "Acciones en el ciclo %s son: %s" % (str(i), str(acts))
+    env.render()
+    time.sleep(2)
+    env.render(close=True)
     if done:
         print "FIN DE CICLO, QUE HA PASADO?"
         break
