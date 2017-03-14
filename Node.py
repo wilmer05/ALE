@@ -1,4 +1,6 @@
 import copy
+import time
+import constants
 
 def aplicable_actions(space):
 
@@ -25,17 +27,18 @@ class Node:
         self.children = []
         self.action = action
         self.terminal = False
-        self.reward = float("-inf")
         self.best_reward_below = float("-inf")
         self.best_action = None
 
         if parent:
             self.depth = parent.depth + 1
             self.size_subtree = 0
+            self.reward = parent.reward
             #self.accumulated_reward = parent.accumulated_reward + reward
         else:
             self.depth = 0
             self.size_subtree = 0
+            self.reward = 0
             #self.accumulated_reward = reward
 
 
@@ -77,12 +80,24 @@ class Node:
 
     def expand(self):
         "Return a list of nodes reachable from this node. [Fig. 3.8]"
-
-        for act in range(0,9):
+        best_child = None
+        for act in range(0,8):
             n = Node(copy.deepcopy(self.env), None, self, act)
-            n.state, n.reward, terminal, info = n.env.step(act)
+            #n = Node(self.env, None, self, act)
+            n.frameskip = constants.FRAMESKIP
+            n.state, reward, terminal, info = n.env.step(act)
+
             if type(n.reward) is list:
-                n.reward = max(n.reward)
+                n.reward += max(n.reward)
+            else:
+                n.reward += reward
+
+            if n.reward != 0 :
+                print n.reward
+
+            best_child = n if ((best_child and best_child.reward < n.reward) or (best_child is None)) else best_child
+
             n.best_reward_below = n.reward
             n.terminal = terminal
             self.children.append(n)
+        return best_child

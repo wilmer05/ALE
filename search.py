@@ -1,11 +1,13 @@
 import util
 import copy
 from Node import Node
-def graphSearch(root_env, fringe, lookahead_size = 10, max_depth = 10):
+import constants
+def graphSearch(root_env, fringe, lookahead_size = constants.LOOKAHEAD_SIZE, max_depth = constants.MAX_DEPTH_SIZE):
     """Search through the successors of a problem to find a goal.
     The argument fringe should be an empty queue. [Fig. 3.18]"""
 
     rootNode = Node(copy.deepcopy(root_env))
+    rootNode.frameskip = constants.FRAMESKIP
     fringe.push(rootNode)
     try:
         rootNode.__hash__()
@@ -14,22 +16,20 @@ def graphSearch(root_env, fringe, lookahead_size = 10, max_depth = 10):
         visited = list()
 
     total_expanded = 0
+    best_node = None
     while not fringe.isEmpty() and total_expanded < lookahead_size:
         node = fringe.pop()
         if node.isTerminal() or node.depth == max_depth:
             continue
 
-        node.expand()
+        n = node.expand()
+
+        best_node = n if ((best_node and n and best_node.reward <= n.reward) or (best_node is None)) else best_node
 
         total_expanded += 1
         
         for nextnode in node.children:
-            nextnode.back_propagate_reward()
+            #nextnode.back_propagate_reward()
             fringe.push(nextnode)
 
-    best_action = None
-    for n in rootNode.children:
-        if n.best_reward_below == rootNode.best_reward_below:
-            best_action = n.action
-
-    return best_action
+    return best_node.path()
