@@ -7,7 +7,7 @@ def graphSearch(root_env, fringe, lookahead_size = constants.LOOKAHEAD_SIZE, max
     The argument fringe should be an empty queue. [Fig. 3.18]"""
 
     rootNode = Node(copy.deepcopy(root_env))
-    rootNode.frameskip = constants.FRAMESKIP
+    rootNode.env.frameskip = constants.FRAMESKIP
     fringe.push(rootNode)
     try:
         rootNode.__hash__()
