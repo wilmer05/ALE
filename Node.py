@@ -81,27 +81,33 @@ class Node:
     def expand(self):
         "Return a list of nodes reachable from this node. [Fig. 3.8]"
         best_child = None
+        if self.parent:
+            #print "De:"
+            self.parent.env.render()
+            time.sleep(2)
+            self.parent.env.render(close=True)
+            #print "A:"
+            self.env.render()
+            time.sleep(2)
+            self.env.render(close=True)
+            print "reward papa:"
+            print self.parent.reward
+            print "hijo:"
+            print self.reward
+
         for act in range(0,8):
             n = Node(copy.deepcopy(self.env), None, self, act)
             #n = Node(self.env, None, self, act)
             n.env.frameskip = constants.FRAMESKIP
-            print "De:"
-            self.env.render()
-            time.sleep(2)
             n.state, reward, terminal, info = n.env.step(act)
-            print "A:"
-            n.env.render()
-            time.sleep(2)
-            self.env.render(close=True)
-            n.env.render(close=True)
 
             if type(n.reward) is list:
                 n.reward += max(n.reward)
             else:
                 n.reward += reward
 
-            if n.reward != 0:
-                print n.reward
+            #if n.reward != 0:
+            #    print n.reward
 
             best_child = n if ((best_child and best_child.reward < n.reward) or (best_child is None)) else best_child
 

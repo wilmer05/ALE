@@ -13,7 +13,7 @@ cnt = 0
 actions = []
 env.frameskip = constants.FRAMESKIP
 for i in range(constants.CYCLES):
-    acts = graphSearch(env, util.Queue())
+    acts = graphSearch(env, util.Stack())
     actions += acts
     done = False
     for act in acts:
