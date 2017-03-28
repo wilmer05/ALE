@@ -6,7 +6,7 @@ def graphSearch(root_env, fringe, lookahead_size = constants.LOOKAHEAD_SIZE, max
     """Search through the successors of a problem to find a goal.
     The argument fringe should be an empty queue. [Fig. 3.18]"""
 
-    rootNode = Node(copy.deepcopy(root_env))
+    rootNode = Node(root_env, ale_state=root_env.ale.cloneState())
     rootNode.env.frameskip = constants.FRAMESKIP
     fringe.push(rootNode)
     try:

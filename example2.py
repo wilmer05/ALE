@@ -12,8 +12,11 @@ env.reset()
 cnt = 0
 actions = []
 env.frameskip = constants.FRAMESKIP
+first_state = env.ale.cloneState()
 for i in range(constants.CYCLES):
+    partialState = env.ale.cloneState()
     acts = graphSearch(env, util.Queue())
+    env.ale.restoreState(partialState)
     actions += acts
     done = False
     for act in acts:
@@ -22,15 +25,17 @@ for i in range(constants.CYCLES):
         if done:
             break
     print "Acciones en el ciclo %s son: %s" % (str(i), str(acts))
-    env.render()
-    time.sleep(2)
-    env.render(close=True)
+    #env.render()
+    #time.sleep(2)
+    #env.render(close=True)
     if done:
         print "FIN DE CICLO, QUE HA PASADO?"
         break
 
 
 env.reset()
+env.ale.restoreState(first_state)
+env.frameskip = constants.FRAMESKIP
 print actions
 for act in actions:
     obs, rew, done, info = env.step(act)

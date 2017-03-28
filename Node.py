@@ -19,7 +19,7 @@ class Node:
     explanation of how the f and h values are handled.
     You will not need to subclass this class."""
 
-    def __init__(self, env, state=None, parent=None, action=None):
+    def __init__(self, env, state=None, parent=None, action=None, ale_state=None):
         "Create a search tree Node, derived from a parent by an action."
         self.env = env
         self.state = state
@@ -29,6 +29,7 @@ class Node:
         self.terminal = False
         self.best_reward_below = float("-inf")
         self.best_action = None
+        self.ale_state = ale_state
 
         if parent:
             self.depth = parent.depth + 1
@@ -83,24 +84,30 @@ class Node:
         best_child = None
         if False and self.parent:
             #print "De:"
+            self.parent.env.ale.restoreState(self.parent.ale_state)
             self.parent.env.render()
-            time.sleep(2)
-            self.parent.env.render(close=True)
+            time.sleep(1)
             #print "A:"
-            self.env.render()
-            time.sleep(2)
-            self.env.render(close=True)
-            print "reward papa:"
-            print self.parent.reward
+            #self.env.render()
+            #time.sleep(1)
+            #print "reward papa:"
+            #print self.parent.reward
             print "hijo:"
-            print self.reward
+            self.env.ale.restoreState(self.ale_state)
+            self.env.render()
+            time.sleep(1)
+            self.parent.env.render(close=True)
+            self.env.render(close=True)
+            #print self.reward
+            #time.sleep(2)
 
         for act in range(0,constants.NUMBER_OF_ACTIONS):
-            n = Node(copy.deepcopy(self.env), None, self, act)
+            n = Node(self.env, None, self, act, self.ale_state)
             #n = Node(self.env, None, self, act)
-            n.env.frameskip = constants.FRAMESKIP
+            n.env.ale.restoreState(self.ale_state)
+            #n.env.frameskip = constants.FRAMESKIP
             n.state, reward, terminal, info = n.env.step(act)
-
+            n.ale_state = n.env.ale.cloneState()
             if type(n.reward) is list:
                 n.reward += max(n.reward)
             else:
