@@ -1,7 +1,7 @@
 import sys
 import inspect
 import heapq, random
-
+from collections import deque
 
 """
  Data structures useful for implementing SearchAgents
@@ -27,11 +27,11 @@ class Stack:
 class Queue:
   "A container with a first-in-first-out (FIFO) queuing policy."
   def __init__(self):
-    self.list = []
+    self.list = deque()
   
   def push(self,item):
     "Enqueue the 'item' into the queue"
-    self.list.insert(0,item)
+    self.list.appendleft(item)
 
   def pop(self):
     """
