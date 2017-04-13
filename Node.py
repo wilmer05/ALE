@@ -33,39 +33,15 @@ class Node(HyperNode.HyperNode):
     def expand(self):
         "Return a list of nodes reachable from this node. [Fig. 3.8]"
         best_child = None
-        if False and self.parent:
-            #print "De:"
-            self.parent.env.ale.restoreState(self.parent.ale_state)
-            self.parent.env.render()
-            time.sleep(1)
-            #print "A:"
-            #self.env.render()
-            #time.sleep(1)
-            #print "reward papa:"
-            #print self.parent.reward
-            print "hijo:"
-            self.env.ale.restoreState(self.ale_state)
-            self.env.render()
-            time.sleep(1)
-            self.parent.env.render(close=True)
-            self.env.render(close=True)
-            #print self.reward
-            #time.sleep(2)
-
         for act in range(0,constants.NUMBER_OF_ACTIONS):
             n = Node(self.env, None, self, act, self.ale_state)
-            #n = Node(self.env, None, self, act)
             n.env.ale.restoreState(self.ale_state)
-            #n.env.frameskip = constants.FRAMESKIP
             n.state, reward, terminal, info = n.env.step(act)
             n.ale_state = n.env.ale.cloneState()
             if type(n.reward) is list:
                 n.reward += max(n.reward)
             else:
                 n.reward += reward
-
-            #if n.reward != 0:
-            #    print n.reward
 
             best_child = n if ((best_child and best_child.reward < n.reward) or (best_child is None)) else best_child
 
