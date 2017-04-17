@@ -35,9 +35,8 @@ def graphSearch(root_env, fringe, lookahead_size = constants.LOOKAHEAD_SIZE, max
 
         total_expanded += 1
         for nextnode in node.children:
-            novelty = nextnode.get_novelty()
-            print novelty
-            if nextnode not in visited and novelty <= constants.MAX_NOVELTY:
+            if nextnode not in visited and nextnode.has_novelty_1():
+                nextnode.add_new_features()
                 fringe.push(nextnode)
 
     return best_node.path()

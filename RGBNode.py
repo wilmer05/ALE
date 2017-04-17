@@ -50,6 +50,13 @@ class RGBNode(HyperNode.HyperNode):
             for feature in new_features:
                 globales.generated_tuples.add(feature)
         return novelty
+    
+    def has_novelty_1(self):
+        new_features = []
+        for feature in self.content:
+            if feature not in globales.generated_tuples:
+                return True
+        return False
 
     def add_new_features(self):
         for feature in self.content:
