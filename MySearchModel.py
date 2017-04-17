@@ -1,6 +1,7 @@
+import time
 import gym
 import constants
-import RGBState
+from RGBState import RGBState
 class MySearchModel(object):
     def __init__(self, searchspace):
         self.searchspace = searchspace
@@ -20,7 +21,7 @@ class MySearchModel(object):
         return state
 
     def is_goal(self, state):
-        return state.reward > 5
+        return state.reward > 70
 
     def successors(self, state):
         return state.get_successor_states(self.env)
@@ -31,3 +32,14 @@ class MySearchModel(object):
     def make_node(self, parent, action, state):
         return self.searchspace.make_child_node(parent, action, state)
 
+    def show_env(self):
+        self.env.render()
+        time.sleep(2)
+        self.env.render(close=True)
+    
+    def simulate_actions(self, actions):
+        self.env.reset()
+        for act in actions:
+            print "\tAction: %s" % str(act)
+            self.env.step(act)
+            self.show_env()

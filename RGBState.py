@@ -1,3 +1,4 @@
+import time
 import copy
 import time
 import constants
@@ -35,13 +36,12 @@ class RGBState():
             n = RGBState()
             env.ale.restoreState(self.ale_state)
             screen, reward, terminal, info = env.step(act)
+            #env.render()
+            #time.sleep(2)
+            #env.render(close=True)
             n.set_features(screen)
             n.ale_state = env.ale.cloneState()
             n.reward = self.reward + reward
-            if type(n.reward) is list:
-                n.reward += max(n.reward)
-            else:
-                n.reward += reward
             n.best_reward_below = n.reward
             n.terminal = terminal
             nexts.append((act, n))
