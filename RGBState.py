@@ -22,11 +22,25 @@ class RGBState():
     def process_screen(self):
         return self.features
 
-    def set_features(self, rgb):
-        features = []
+    def get_basic_features(self, rgb):
+        f = set()
         for x in range(0,len(rgb)):
             for y in range(0, len(rgb[0])):
-                features.append((x,y,rgb[x][y][0], rgb[x][y][1], rgb[x][y][2]))
+                color = (rgb[x][y][0], rgb[x][y][1], rgb[x][y][2])
+                f.add(( x / constants.SPLIT_X, y / constants.SPLIT_Y, color))
+        return list(f)
+
+    def get_b_pros_features(self, rgb):
+        return []
+
+    def get_b_prost_features(self, rgb):
+        return []
+
+    def set_features(self, rgb):
+        features = []
+        features += self.get_basic_features(rgb)
+        features += self.get_b_pros_features(rgb)
+        features += self.get_b_prost_features(rgb)
         self.features = features
 
     def get_successor_states(self, env):

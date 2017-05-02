@@ -21,7 +21,7 @@ class MySearchModel(object):
         return state
 
     def is_goal(self, state):
-        return state.reward > 70
+        return state.reward > constants.GOAL_SCORE
 
     def successors(self, state):
         return state.get_successor_states(self.env)
