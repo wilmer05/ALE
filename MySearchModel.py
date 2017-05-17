@@ -9,6 +9,7 @@ class MySearchModel(object):
         self.env._obs_type = 'image'
         self.env.reset()
         self.env.frameskip = constants.FRAMESKIP
+        self.root = self.make_root_node()
 
     def init(self):
         self.env.reset()
@@ -20,10 +21,10 @@ class MySearchModel(object):
 
         return state
 
-    def is_goal(self, state):
-        return state.reward > constants.GOAL_SCORE
+    def is_goal(self, node):
+        return node.state.reward > constants.GOAL_SCORE
 
-    def successors(self, state):
+    def get_successor_states(self, state):
         return state.get_successor_states(self.env)
 
     def make_root_node(self):
@@ -43,3 +44,12 @@ class MySearchModel(object):
             print "\tAction: %s" % str(act)
             self.env.step(act)
             self.show_env()
+
+    def successor_nodes(self, node):
+       successors = []
+       for action, state in self.get_successor_states(node.state):
+           successors.append(self.searchspace.make_child_node(node, action, state))
+       return successors
+
+    def get_features(self, node):
+        return node.state.features

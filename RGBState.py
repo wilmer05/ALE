@@ -4,6 +4,7 @@ import time
 import constants
 import HyperNode
 import globales
+import Features
 
 class RGBState():
     def __init__(self, ale_state=None, features=None):
@@ -30,7 +31,11 @@ class RGBState():
                 f.add(( x / constants.SPLIT_X, y / constants.SPLIT_Y, color))
         return list(f)
 
-    def get_b_pros_features(self, rgb):
+    def get_b_pros_features(self, rgb, fs):
+        tmp = list(fs)
+        list.sort(tmp)
+        ls = [ set() for x in range(0,20)]
+        #print tmp
         return []
 
     def get_b_prost_features(self, rgb):
@@ -39,9 +44,9 @@ class RGBState():
     def set_features(self, rgb):
         features = []
         features += self.get_basic_features(rgb)
-        features += self.get_b_pros_features(rgb)
+        features += self.get_b_pros_features(rgb, features)
         features += self.get_b_prost_features(rgb)
-        self.features = features
+        self.features = Features.Features(features)
 
     def get_successor_states(self, env):
         "Return a list of nodes reachable from this node. [Fig. 3.8]"
