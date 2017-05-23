@@ -5,7 +5,8 @@ from RGBState import RGBState
 class MySearchModel(object):
     def __init__(self, searchspace):
         self.searchspace = searchspace
-        self.env = gym.make('MsPacman-ram-v0')
+        self.env = gym.make(constants.GAMES[8])
+        #print self.env._action_set
         self.env._obs_type = 'image'
         self.env.reset()
         self.env.frameskip = constants.FRAMESKIP

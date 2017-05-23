@@ -51,7 +51,8 @@ class RGBState():
     def get_successor_states(self, env):
         "Return a list of nodes reachable from this node. [Fig. 3.8]"
         nexts = []
-        for act in range(0, constants.NUMBER_OF_ACTIONS):
+        for act in range(0,len(env._action_set)):
+            #print act
             n = RGBState()
             env.ale.restoreState(self.ale_state)
             screen, reward, terminal, info = env.step(act)
